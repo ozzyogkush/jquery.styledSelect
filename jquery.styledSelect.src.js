@@ -51,7 +51,7 @@
 		
 		/**
 		 * Default options for the widget. Overwrite by including individual
-		 * options in the 'options' map object when extending the slider container.
+		 * options in the 'options' map object when extending the styledSelect widget.
 		 *
 		 * @access		public
 		 * @type		Object
