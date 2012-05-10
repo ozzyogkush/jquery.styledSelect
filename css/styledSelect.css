@@ -1,0 +1,71 @@
+/**
+ * The primary CSS file for the StyledSelect widget.
+ *
+ * @version		1.0
+ */
+
+/**
+ * The original select element, with a 'data-styled-select-id' attribute, will
+ * be given a pointer, position absolutely, with 0 opacity/alpha. Default 16px
+ * tall with 14px line height for vertical-align.
+ */
+select[data-styled-select-id] {
+	position:absolute;
+	z-index:4;
+	cursor:pointer;
+	line-height: 14px;
+	height:16px;
+	opacity:0;
+	/* For IE7 */
+	zoom:1;
+	*display:inline;
+	filter:alpha(opacity=0);
+	/* For IE8 */
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+}
+
+/**
+ * The replacement widget element will have the same height and line-height
+ * as the original select element, and be displayed inline-block.
+ */
+div.styled_select {
+	position:relative;
+	cursor:pointer;
+	display:inline-block;
+	height:16px;
+	line-height: 14px;
+	/* For IE7 */
+	zoom:1;
+	*display:inline;
+	/* For IE7 and IE8 */
+	*line-height:16px;
+}
+
+/**
+ * Both the selected option display span and the indicator dropdown arrow span
+ * should be displayed inline-block.
+ */
+div.styled_select span.styled_select_option_display,
+div.styled_select span.styled_select_arrow {
+	display:inline-block;
+	/* For IE7 */
+	zoom:1;
+	*display:inline;
+}
+
+/**
+ * The indicator dropdown arrow span should be positioned to the far right of its
+ * the replacement widget element with a left border, a 1px top offset, and 28px width.
+ */
+div.styled_select span.styled_select_arrow {
+	position:absolute;
+	right:0px;
+	border-left: 1px solid #408AC8;
+	margin-left:auto;
+	margin-right:auto;
+	background-repeat:no-repeat;
+	background-size:7px 6px;
+	background-position:center center;
+	width:28px;
+	top:1px;
+}
