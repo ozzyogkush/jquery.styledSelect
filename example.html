@@ -9,16 +9,11 @@
 		<script type="text/javascript" src="jquery.styledSelect.src.js"></script> <!-- REQUIRED FILE -->
 
 		<style type='text/css'>
-			select {
-				width:245px;
-			}
 			div.styled_select {
 				border:1px solid #408ac8;
-				text-indent: 4px !important;
 				-moz-border-radius:4px;
 				-webkit-border-radius:4px;
 				border-radius:4px;
-				width:245px;
 				font-size:14px;
 				vertical-align:middle;
 				background-color:#ffffff;
@@ -36,13 +31,17 @@
 			div.that_you_want {
 				font-style:italic;
 			}
+			
+			#select_box_1 {
+				width:150px;
+			}
 		</style>
 	</head>
 	
 	<body>
 		Basic example of the styledSelect class. View the source code.<br /><br />
 		
-		<select name="select_box_1" class="some_random_class" data-styled-select-id="StyledSelect1" tabindex="1" id="select_box_1">
+		<select name="select_box_1" class="some_random_class" tabindex="1" id="select_box_1">
 			<option value="">I am a(n)...</option>
 			<option value="3">Physician (practicing)</option>
 			<option value="4">Physician (Resident / Intern / Fellow)</option>
@@ -52,6 +51,7 @@
 		<script type='text/javascript'>
 			$('select#select_box_1').styledSelectBox({image_base:'images',
 													  widget_height: 30,
+													  styled_select_id : 'select_box_1StyledSelect',
 													  classes:['any_extra_classes', 'that_you_want']});
 		</script>
 	</body>
