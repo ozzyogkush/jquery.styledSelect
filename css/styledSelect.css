@@ -32,6 +32,7 @@ div.styled_select {
 	position:relative;
 	cursor:pointer;
 	display:inline-block;
+	text-align:left;
 	height:16px;
 	line-height: 14px;
 	/* For IE7 */
@@ -60,6 +61,7 @@ div.styled_select span.styled_select_arrow {
 div.styled_select div.styled_select_option_display {
 	overflow:hidden;
 	text-indent:4px;
+	text-align:left;
 }
 
 /**
@@ -70,11 +72,11 @@ div.styled_select span.styled_select_arrow {
 	position:absolute;
 	top:1px;
 	right:0px;
+	text-align:center;
 	margin-left:auto;
 	margin-right:auto;
 	background-repeat:no-repeat;
 	background-size:7px 6px;
 	background-position:center center;
-	min-width:10px;
-	max-width:28px;
+	width:13px;
 }

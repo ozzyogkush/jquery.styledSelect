@@ -25,7 +25,7 @@
  * @example		See example.html
  * @class		StyledSelectBox
  * @name		StyledSelectBox
- * @version		1.1
+ * @version		1.1.1
  * @author		Derek Rosenzweig <derek.rosenzweig@gmail.com, drosenzweig@riccagroup.com>
  */
 (function($) {
@@ -132,7 +132,7 @@
 		 * @access		public
 		 * @memberOf	StyledSelectBox
 		 * @since		1.0
-		 * @updated		1.1
+		 * @updated		1.1.1
 		 */
 		this.initStyledSelectBox = function() {
 			// First check for valid 'styled_select_id' option.
@@ -156,8 +156,8 @@
 			linked_select_box.addClass('original_select_now_styled');
 			
 			// Set the calculated widths
-			replacement_container_div.css({width:linked_select_box.outerWidth()+'px'});;
-			selected_option_div.css({width:(parseInt(replacement_container_div.innerWidth()-arrow_span.innerWidth()))+'px'});
+			replacement_container_div.css({width:linked_select_box.outerWidth()+'px'});
+			selected_option_div.css({width:(parseInt(replacement_container_div.innerWidth()-arrow_span.outerWidth()))+'px'});
 			
 			// Set the heights
 			if (options.widget_height != null) {
@@ -198,19 +198,22 @@
 		/**
 		 * When the user selects a new <option> from the list of available values,
 		 * or the default 'empty' value, it will update the 'styled_select_option_display'
-		 * <span> element with the text of the newly selected <option>.
+		 * <div> element with the text of the newly selected <option>.
 		 *
 		 * @public
 		 * @memberOf	StyledSelectBox
 		 * @since		1.0
-		 * @updated		1.1
+		 * @updated		1.1.1
 		 *
 		 * @param		change_event			jQuery.Event				jQuery 'change' Event
 		 */
 		this.setCurrentSelectedText = function(change_event) {
 			var select_box = linked_select_box.get(0);
-			var opts = linked_select_box.find('option');//select_box.children;
-			replacement_container_div.find('div.styled_select_option_display').html(opts[select_box.selectedIndex].text);
+			var opts = linked_select_box.find('option');
+			var selected_option = opts[select_box.selectedIndex];
+			if (selected_option != null) {
+				replacement_container_div.find('div.styled_select_option_display').html(selected_option.text);
+			}
 			linked_select_box.blur();
 		}
 		
