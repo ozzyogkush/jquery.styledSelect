@@ -25,7 +25,7 @@
  * @example		See example.html
  * @class		StyledSelectBox
  * @name		StyledSelectBox
- * @version		1.1.1
+ * @version		1.1.2
  * @author		Derek Rosenzweig <derek.rosenzweig@gmail.com, drosenzweig@riccagroup.com>
  */
 (function($) {
@@ -59,13 +59,14 @@
 		 * @type		Object
 		 * @memberOf	StyledSelectBox
 		 * @since		1.0
-		 * @updated		1.1
+		 * @updated		1.1.2
 		 */
 		var default_options = {
 			styled_select_id : null,				// ID of the new element that'll be created. Default null. Required.
 			image_base : null,						// Location of directory where images are located. Default null. Required.
 			classes : [],							// A set of additional class names that will get applied to the replacement 'styled_select' <div>. Default []. Optional.
-			widget_height : null					// The height of the widget in pixels. Default null. Optional.
+			widget_height : null,					// The height of the widget in pixels. Default null. Optional.
+			include_separator_border : true			// Flag indicating whether to include a border separator between the dropdown arrow and the text content. Optional. Default true.
 		};
 		options = $.extend(default_options, options);
 		
@@ -132,7 +133,7 @@
 		 * @access		public
 		 * @memberOf	StyledSelectBox
 		 * @since		1.0
-		 * @updated		1.1.1
+		 * @updated		1.1.2
 		 */
 		this.initStyledSelectBox = function() {
 			// First check for valid 'styled_select_id' option.
@@ -149,9 +150,14 @@
 			// Create the replacement widget elements.
 			replacement_container_div = $("<div class='styled_select' id='"+options.styled_select_id+"'></div>");
 			selected_option_div = $("<div class='styled_select_option_display'></div");
-			var arrow_left_border = replacement_container_div.css('border-left-width') + ' ' + replacement_container_div.css('border-left-style') + ' ' + replacement_container_div.css('border-left-color');
-			arrow_span = $("<span class='styled_select_arrow'>&nbsp;</span>").css({backgroundImage:'url('+options.image_base+'/small-arrow.png'+')',
-																				   borderLeft: arrow_left_border});
+			arrow_span = $("<span class='styled_select_arrow'>&nbsp;</span>").css({backgroundImage:'url('+options.image_base+'/small-arrow.png'+')'});
+			
+			if (options.include_separator_border) {
+				// Only add the border if we specify to do so
+				var arrow_left_border = replacement_container_div.css('border-left-width') + ' ' + replacement_container_div.css('border-left-style') + ' ' + replacement_container_div.css('border-left-color');
+				arrow_span.css({borderLeft: arrow_left_border});
+			}
+			
 			replacement_container_div.append(selected_option_div).append(arrow_span);
 			linked_select_box.addClass('original_select_now_styled');
 			
