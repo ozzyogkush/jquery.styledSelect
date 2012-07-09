@@ -22,10 +22,12 @@
  * 		styled_select_id		the ID of the new element that will be created
  * 		image_base				location of directory where images are located
  * 
+ * @changelog	1.1.3 -	bug fix: added 'z_index' option for using this with elements with high zIndex values, this can override.
+ * 
  * @example		See example.html
  * @class		StyledSelectBox
  * @name		StyledSelectBox
- * @version		1.1.2
+ * @version		1.1.3
  * @author		Derek Rosenzweig <derek.rosenzweig@gmail.com, drosenzweig@riccagroup.com>
  */
 (function($) {
@@ -59,14 +61,15 @@
 		 * @type		Object
 		 * @memberOf	StyledSelectBox
 		 * @since		1.0
-		 * @updated		1.1.2
+		 * @updated		1.1.3
 		 */
 		var default_options = {
 			styled_select_id : null,				// ID of the new element that'll be created. Default null. Required.
 			image_base : null,						// Location of directory where images are located. Default null. Required.
 			classes : [],							// A set of additional class names that will get applied to the replacement 'styled_select' <div>. Default []. Optional.
 			widget_height : null,					// The height of the widget in pixels. Default null. Optional.
-			include_separator_border : true			// Flag indicating whether to include a border separator between the dropdown arrow and the text content. Optional. Default true.
+			include_separator_border : true,		// Flag indicating whether to include a border separator between the dropdown arrow and the text content. Optional. Default true.
+			z_index : null							// Indicates a zIndex value for the new 'styled_select' <div>. Useful for when the default class-based zIndex is insufficient. Default null. Optional.
 		};
 		options = $.extend(default_options, options);
 		
@@ -133,7 +136,7 @@
 		 * @access		public
 		 * @memberOf	StyledSelectBox
 		 * @since		1.0
-		 * @updated		1.1.2
+		 * @updated		1.1.3
 		 */
 		this.initStyledSelectBox = function() {
 			// First check for valid 'styled_select_id' option.
@@ -160,6 +163,11 @@
 			
 			replacement_container_div.append(selected_option_div).append(arrow_span);
 			linked_select_box.addClass('original_select_now_styled');
+			
+			if (options.z_index != null) {
+				replacement_container_div.css({zIndex: options.z_index});
+				linked_select_box.css({zIndex: (options.z_index+1)});
+			}
 			
 			// Set the calculated widths
 			replacement_container_div.css({width:linked_select_box.outerWidth()+'px'});
