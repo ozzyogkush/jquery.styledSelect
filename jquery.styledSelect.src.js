@@ -22,12 +22,13 @@
  * 		styled_select_id		the ID of the new element that will be created
  * 		image_base				location of directory where images are located
  * 
+ * @changelog	1.1.4 -	added 'method' parameter to enable the user to call a function 
  * @changelog	1.1.3 -	bug fix: added 'z_index' option for using this with elements with high zIndex values, this can override.
  * 
  * @example		See example.html
  * @class		StyledSelectBox
  * @name		StyledSelectBox
- * @version		1.1.3
+ * @version		1.1.4
  * @author		Derek Rosenzweig <derek.rosenzweig@gmail.com, drosenzweig@riccagroup.com>
  */
 (function($) {
@@ -41,12 +42,14 @@
      * @access		public
      * @memberOf	StyledSelectBox
      * @since		1.0
+     * @updated		1.1.4
      *
-     * @param		options				Object				An object containing various options.
+     * @param		options_or_method	mixed				An object containing various options, or a string containing a method name.
+     * 															Valid method names: 'resize', 'update'
      *
      * @returns		this				jQuery				The jQuery element being extended gets returned for chaining purposes
      */
-	$.fn.styledSelectBox = function(options) {
+	$.fn.styledSelectBox = function(options_or_method) {
 		//--------------------------------------------------------------------------
 		//
 		//  Variables and get/set functions
@@ -71,7 +74,21 @@
 			include_separator_border : true,		// Flag indicating whether to include a border separator between the dropdown arrow and the text content. Optional. Default true.
 			z_index : null							// Indicates a zIndex value for the new 'styled_select' <div>. Useful for when the default class-based zIndex is insufficient. Default null. Optional.
 		};
-		options = $.extend(default_options, options);
+		
+		/**
+		 * The actual final set of extended options that will be used in creating
+		 * the replacement styledSelect widget.
+		 *
+		 * This will be stored on the replacement styledSelect widget as 'styled_select_options'
+		 * data for easy retrieval and use when the 'options_or_method' var is a string
+		 * indicating a function to be run.
+		 *
+		 * @access		public
+		 * @type		Object
+		 * @memberOf	StyledSelectBox
+		 * @since		1.1.4
+		 */
+		var options = {};
 		
 		/**
 		 * The <select> element which will be overlaid by the new widget.
@@ -169,6 +186,38 @@
 				linked_select_box.css({zIndex: (options.z_index+1)});
 			}
 			
+			this.resize();
+			
+			// Add optional classes.
+			if (options.classes.length > 0) {
+				for (var i = 0; i < options.classes.length; i++) {
+					replacement_container_div.addClass(options.classes[i]);
+				}
+			}
+			
+			// Add the new replacement widget.
+			linked_select_box.after(replacement_container_div);
+			
+			// Add the event handler(s).
+			linked_select_box.on('change', this.setCurrentSelectedText);
+			
+			// Add the current options as data on the new replacement container div
+			replacement_container_div.data('styled_select_options', options);
+			
+			// Determine the option text to show.
+			this.setCurrentSelectedText();
+		}
+		
+		/**
+		 * Determines the height and width of the new widget based on the height and
+		 * width of the original <select> widget, and sets those values to the replacement
+		 * container div.
+		 *
+		 * @access		public
+		 * @memberOf	StyledSelectBox
+		 * @since		1.1.4
+		 */
+		this.resize = function() {
 			// Set the calculated widths
 			replacement_container_div.css({width:linked_select_box.outerWidth()+'px'});
 			selected_option_div.css({width:(parseInt(replacement_container_div.innerWidth()-arrow_span.outerWidth()))+'px'});
@@ -189,22 +238,6 @@
 			else {
 				selected_option_div.css({height:linked_select_box.height() + "px"});
 			}
-			
-			// Add optional classes.
-			if (options.classes.length > 0) {
-				for (var i = 0; i < options.classes.length; i++) {
-					replacement_container_div.addClass(options.classes[i]);
-				}
-			}
-			
-			// Add the new replacement widget.
-			linked_select_box.after(replacement_container_div);
-			
-			// Add the event handler(s).
-			linked_select_box.on('change', this.setCurrentSelectedText);
-			
-			// Determine the option text to show.
-			this.setCurrentSelectedText();
 		}
 		
 		/********* Event handlers *********/
@@ -231,8 +264,28 @@
 			linked_select_box.blur();
 		}
 		
-		/********* Initialize the styled select box *********/
-		this.initStyledSelectBox();
+		/********* Initialize the styled select box or call a specific function *********/
+		if (typeof options_or_method == "string") {
+			/* Call a specific function */
+			replacement_container_div = linked_select_box.next('div.styled_select');
+			selected_option_div = replacement_container_div.find('div.styled_select_option_display');
+			arrow_span = replacement_container_div.find('span.styled_select_arrow');
+			options = replacement_container_div.data('styled_select_options');
+			
+			if (options_or_method == 'resize') {
+				// Resize the existing styledSelect widget according to the original select widget and
+				// the options stored in the 'styled_select_options' data
+				this.resize();
+			}
+			else if (options_or_method == 'update') {
+				this.setCurrentSelectedText();
+			}
+		}
+		else {
+			/* Initialize the styled select box */
+			options = $.extend(default_options, options_or_method);
+			this.initStyledSelectBox();
+		}
 		
 		/********* Return the newly extended element for chaining *********/
 		return this;
