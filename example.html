@@ -43,16 +43,27 @@
 		
 		<select name="select_box_1" class="some_random_class" tabindex="1" id="select_box_1">
 			<option value=""></option>
-			<option value="3">Physician (practicing)</option>
-			<option value="4">Physician (Resident / Intern / Fellow)</option>
-			<option value="2">Physician Assistant</option>
-			<option value="8">Nurse Practitioner</option>
+			<option value="3">An Option</option>
+			<option value="4">Another Option</option>
+			<optgroup label="420_time">
+				<option value="5">A Grouped Option</option>
+				<option value="6">Another Grouped Option</option>
+			</optgroup>
+			<option value="2">Last Option</option>
 		</select>
 		<script type='text/javascript'>
-			$('select#select_box_1').styledSelectBox({image_base:'images',
-													  widget_height: 30,
-													  styled_select_id : 'select_box_1StyledSelect',
-													  classes:['any_extra_classes', 'that_you_want']});
+			$(document).ready(function() {
+				$('select').each(function(index, select_box) {
+					var si_id = $(select_box).prop('id');
+					$(select_box).styledSelectBox({styled_select_id : si_id+"StyledSelect",
+												   image_base:'images',
+												   widget_height: 30,
+												   classes:['any_extra_classes', 'that_you_want']});
+					// now resize and update it
+					$(select_box).styledSelectBox('resize');
+					$(select_box).styledSelectBox('update');
+				});
+			});
 		</script>
 	</body>
 </html>

@@ -1,8 +1,18 @@
 /**
  * The primary CSS file for the StyledSelect widget.
  *
- * @version		1.1
+ * @version		1.1.5
  */
+
+/**
+ * Provides basic focus styles - a dark grey shadow outline - on the new styled
+ * select widget.
+ */
+select.original_select_now_styled:focus + div.styled_select {
+	box-shadow: 0 0 4px 1px #888888;
+	-webkit-box-shadow: 0 0 4px 1px #888888;
+	-moz-box-shadow: 0 0 4px 1px #888888;
+}
 
 /**
  * The original select element, with a 'original_select_now_styled' class, will

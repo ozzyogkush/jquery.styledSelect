@@ -1,34 +1,63 @@
 /**
- * Regular <select> widgets are not able to be styled to full satisfaction, so this
+ * jQuery Styled Select Box Widget Replacement Plugin
+ * ==================================================
+ * 
+ * Regular `<select>` widgets are not able to be styled to full satisfaction, so this
  * makes it possible for a user to fully integrate this commonly used widget into
  * whatever style they demand.
- *
- * Essentially it creates a new <div> element with the class 'styled_select'. This contains
- * a <span> element with the class 'styled_select_option_display' which displays
- * the text value of the currently selected <option> of the <select> element, plus
- * a <span> element with the class 'styled_select_arrow' which displays the icon indicating
- * that the element can drop down options. The original <select> widget then becomes completely
- * transparent but still exists overtop the new 'styled_select' <div>, registering all key and
- * mouse events, while appearing as other styled widgets on your page would.
- *
- * Works on IE7+, FF, Webkit, Opera.
- *
- * Requires jQuery.js 1.7.0 or higher to function.
- *
- * Usage:
- * 	Create a regular <select> widget in HTML. Override any CSS styles needed for
- * 	your theme. On page DOM load, simply call the styledSelectBox() function with
- * 	or without any special options. Required options:
- * 		styled_select_id		the ID of the new element that will be created
- * 		image_base				location of directory where images are located
  * 
+ * Cross-platform Compatibility
+ * ----------------------------
+ * 
+ * * Firefox 3+
+ * * Webkit (Google Chrome, Apple's Safari)
+ * * Internet Explorer 7+
+ * * Opera
+ * 
+ * Requirements
+ * ------------
+ * 
+ * * jQuery 1.7.0+
+ * 
+ * Feature Overview
+ * ----------------
+ * 
+ * * Auto-sizes to your select box (unless overridden through CSS)
+ * * Exposes methods for ease of use after initialization
+ * 
+ * Essentially it creates a new `<div>` element with the class 'styled\_select'. This contains
+ * a `<span>` element with the class 'styled\_select\_option\_display' which displays
+ * the text value of the currently selected `<option>` of the `<select>` element, plus
+ * a `<span>` element with the class 'styled\_select\_arrow' which displays the icon indicating
+ * that the element can drop down options. The original `<select>` widget then becomes completely
+ * transparent but still exists overtop the new 'styled\_select' `<div>`, registering all key and
+ * mouse events, while appearing as other styled widgets on your page would.
+ * 
+ * Usage
+ * =====
+ * 
+ * Create a regular `<select>` widget in HTML. Override any CSS styles needed for
+ * your theme. On page DOM load, simply call the styledSelectBox() function with
+ * or without any special options.
+ * ####Required options:
+ * * styled\_select\_id		the ID of the new element that will be created
+ * * image\_base				location of directory where images are located
+ * 
+ * If you need to resize the widget (say after updating the list of options in the
+ * original select box) or explicitly update the selected text, instead of passing
+ * an object with options, you can pass a method name.
+ * ####Exposed methods:
+ * * resize
+ * * update
+ * 
+ * @changelog	1.1.5 - added fix for navigating via key press events. added README
  * @changelog	1.1.4 -	added 'method' parameter to enable the user to call a function 
- * @changelog	1.1.3 -	bug fix: added 'z_index' option for using this with elements with high zIndex values, this can override.
+ * @changelog	1.1.3 -	bug fix: added 'z\_index' option for using this with elements with high zIndex values, this can override.
  * 
  * @example		See example.html
  * @class		StyledSelectBox
  * @name		StyledSelectBox
- * @version		1.1.4
+ * @version		1.1.5
  * @author		Derek Rosenzweig <derek.rosenzweig@gmail.com, drosenzweig@riccagroup.com>
  */
 (function($) {
@@ -42,7 +71,7 @@
      * @access		public
      * @memberOf	StyledSelectBox
      * @since		1.0
-     * @updated		1.1.4
+     * @updated		1.1.5
      *
      * @param		options_or_method	mixed				An object containing various options, or a string containing a method name.
      * 															Valid method names: 'resize', 'update'
@@ -150,20 +179,25 @@
 		 * height of the new widget based on the height of the original <select> widget,
 		 * and creates the event handler for changing options.
 		 *
+		 * If the required options are not present, throws an exception.
+		 *
 		 * @access		public
 		 * @memberOf	StyledSelectBox
 		 * @since		1.0
-		 * @updated		1.1.3
+		 * @updated		1.1.5
+		 * @throws		StyledSelectBox exception
 		 */
 		this.initStyledSelectBox = function() {
 			// First check for valid 'styled_select_id' option.
 			if (options.styled_select_id == null) {
-				alert('StyledSelectBox widget: no "styled_select_id" option was passed.');
+				//alert('StyledSelectBox widget: no "styled_select_id" option was passed.');
+				throw 'StyledSelectBox widget: no "styled_select_id" option was passed.';
 				return;
 			}
 			// Next check for required options.
 			if (options.image_base == null) {
-				alert('StyledSelectBox widget: no image base specified.');
+				//alert('StyledSelectBox widget: no image base specified.');
+				throw 'StyledSelectBox widget: no image base specified.';
 				return;
 			}
 			
@@ -199,7 +233,7 @@
 			linked_select_box.after(replacement_container_div);
 			
 			// Add the event handler(s).
-			linked_select_box.on('change', this.setCurrentSelectedText);
+			linked_select_box.on('change', this.setCurrentSelectedText).on('keyup', this.setCurrentSelectedText);
 			
 			// Add the current options as data on the new replacement container div
 			replacement_container_div.data('styled_select_options', options);
@@ -250,7 +284,7 @@
 		 * @public
 		 * @memberOf	StyledSelectBox
 		 * @since		1.0
-		 * @updated		1.1.1
+		 * @updated		1.1.5
 		 *
 		 * @param		change_event			jQuery.Event				jQuery 'change' Event
 		 */
@@ -261,7 +295,6 @@
 			if (selected_option != null) {
 				replacement_container_div.find('div.styled_select_option_display').html(selected_option.text);
 			}
-			linked_select_box.blur();
 		}
 		
 		/********* Initialize the styled select box or call a specific function *********/
