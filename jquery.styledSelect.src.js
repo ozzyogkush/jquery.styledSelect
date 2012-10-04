@@ -50,14 +50,15 @@
  * * resize
  * * update
  * 
- * @changelog	1.1.5 - added fix for navigating via key press events. added README
- * @changelog	1.1.4 -	added 'method' parameter to enable the user to call a function 
+ * @changelog	1.1.6 - bug fix: certain browsers were not properly setting width of the selected\_option\_div element<br />
+ * @changelog	1.1.5 - added fix for navigating via key press events. added README<br />
+ * @changelog	1.1.4 -	added 'method' parameter to enable the user to call a function<br />
  * @changelog	1.1.3 -	bug fix: added 'z\_index' option for using this with elements with high zIndex values, this can override.
  * 
  * @example		See example.html
  * @class		StyledSelectBox
  * @name		StyledSelectBox
- * @version		1.1.5
+ * @version		1.1.6
  * @author		Derek Rosenzweig <derek.rosenzweig@gmail.com, drosenzweig@riccagroup.com>
  */
 (function($) {
@@ -71,7 +72,7 @@
      * @access		public
      * @memberOf	StyledSelectBox
      * @since		1.0
-     * @updated		1.1.5
+     * @updated		1.1.6
      *
      * @param		options_or_method	mixed				An object containing various options, or a string containing a method name.
      * 															Valid method names: 'resize', 'update'
@@ -184,7 +185,7 @@
 		 * @access		public
 		 * @memberOf	StyledSelectBox
 		 * @since		1.0
-		 * @updated		1.1.5
+		 * @updated		1.1.6
 		 * @throws		StyledSelectBox exception
 		 */
 		this.initStyledSelectBox = function() {
@@ -220,8 +221,6 @@
 				linked_select_box.css({zIndex: (options.z_index+1)});
 			}
 			
-			this.resize();
-			
 			// Add optional classes.
 			if (options.classes.length > 0) {
 				for (var i = 0; i < options.classes.length; i++) {
@@ -231,6 +230,9 @@
 			
 			// Add the new replacement widget.
 			linked_select_box.after(replacement_container_div);
+			
+			// Size the widget.
+			this.resize();
 			
 			// Add the event handler(s).
 			linked_select_box.on('change', this.setCurrentSelectedText).on('keyup', this.setCurrentSelectedText);
@@ -250,28 +252,33 @@
 		 * @access		public
 		 * @memberOf	StyledSelectBox
 		 * @since		1.1.4
+		 * @updated		1.1.6
 		 */
 		this.resize = function() {
 			// Set the calculated widths
 			replacement_container_div.css({width:linked_select_box.outerWidth()+'px'});
-			selected_option_div.css({width:(parseInt(replacement_container_div.innerWidth()-arrow_span.outerWidth()))+'px'});
 			
 			// Set the heights
+			var sel_opt_css = {
+				width:(parseInt(replacement_container_div.innerWidth()-arrow_span.outerWidth()))+'px'
+			};
 			if (options.widget_height != null) {
+				var rpcd_css = {
+					height:options.widget_height + "px"
+				};
 				linked_select_box.css({height:options.widget_height + "px",
 									   lineHeight:(parseInt(options.widget_height)-2) + "px"});
-				replacement_container_div.css({height:options.widget_height + "px"});
-				selected_option_div.css({height:options.widget_height + "px"});
-				if ($.browser.msie && parseInt($.browser.version) <= 8) {
-					replacement_container_div.css({lineHeight:options.widget_height + "px"});
+				sel_opt_css['height'] = options.widget_height + "px";
+				rpcd_css['lineHeight'] = (parseInt(options.widget_height)-2) + "px"; // default
+				if ($.browser.msie && parseInt($.browser.version) <= 8) { // IE override
+					rpcd_css['lineHeight'] = options.widget_height + "px";
 				}
-				else {
-					replacement_container_div.css({lineHeight:(parseInt(options.widget_height)-2) + "px"});
-				}
+				replacement_container_div.css(rpcd_css);
 			}
 			else {
-				selected_option_div.css({height:linked_select_box.height() + "px"});
+				sel_opt_css['height'] = linked_select_box.height() + "px";
 			}
+			selected_option_div.css(sel_opt_css);
 		}
 		
 		/********* Event handlers *********/

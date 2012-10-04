@@ -1,7 +1,7 @@
 /**
  * The primary CSS file for the StyledSelect widget.
  *
- * @version		1.1.5
+ * @version		1.1.6
  */
 
 /**
@@ -79,9 +79,6 @@ div.styled_select div.styled_select_option_display {
  * the replacement widget element with a left border, a 1px top offset, and 28px width.
  */
 div.styled_select span.styled_select_arrow {
-	position:absolute;
-	top:1px;
-	right:0px;
 	text-align:center;
 	margin-left:auto;
 	margin-right:auto;
@@ -89,4 +86,8 @@ div.styled_select span.styled_select_arrow {
 	background-size:7px 6px;
 	background-position:center center;
 	width:13px;
+	height:100%;
+	position:absolute;
+	right:0px;
+	*top:1px; /* For IE7 */
 }

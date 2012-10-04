@@ -49,8 +49,9 @@ an object with options, you can pass a method name.
 * resize
 * update
 
-@changelog	1.1.5 - added fix for navigating via key press events. added README
-@changelog	1.1.4 -	added 'method' parameter to enable the user to call a function 
+@changelog	1.1.6 - bug fix: certain browsers were not properly setting width of the selected\_option\_div element<br />
+@changelog	1.1.5 - added fix for navigating via key press events. added README<br />
+@changelog	1.1.4 -	added 'method' parameter to enable the user to call a function<br />
 @changelog	1.1.3 -	bug fix: added 'z\_index' option for using this with elements with high zIndex values, this can override.
 
 Example
@@ -59,7 +60,7 @@ Example
 		<option value=""></option>
 		<option value="3">An Option</option>
 		<option value="4">Another Option</option>
-		<optgroup label="420_time">
+		<optgroup label="-- Option Group --">
 			<option value="5">A Grouped Option</option>
 			<option value="6">Another Grouped Option</option>
 		</optgroup>
