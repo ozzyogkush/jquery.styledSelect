@@ -9,39 +9,29 @@
 		<script type="text/javascript" src="jquery.styledSelect.src.js"></script> <!-- REQUIRED FILE -->
 
 		<style type='text/css'>
-			div.styled_select {
+			select {
+				vertical-align:top;
+			}
+			select#select_box_2, select#select_box_4 {
+				width:150px;
+			}
+			div#select_box_1StyledSelect {
 				border:1px solid #408ac8;
 				-moz-border-radius:4px;
 				-webkit-border-radius:4px;
 				border-radius:4px;
 				font-size:14px;
-				vertical-align:middle;
 				background-color:#ffffff;
 				color:#174b63;
 			}
-			
-			div.some_random_class {
-				color:#008800;
-			}
-			
 			div.any_extra_classes {
 				font-family:"Lucida Grande";
-			}
-			
-			div.that_you_want {
-				font-style:italic;
-				font-size:11px;
-			}
-			
-			#select_box_1 {
-				width:150px;
 			}
 		</style>
 	</head>
 	
 	<body>
-		Basic example of the styledSelect class. View the source code.<br /><br />
-		
+		The first box gets specialized styles.<br />
 		<select name="select_box_1" class="some_random_class" tabindex="1" id="select_box_1">
 			<option value=""></option>
 			<option value="3">An Option</option>
@@ -49,21 +39,60 @@
 			<optgroup label="-- Option Group --">
 				<option value="5">A Grouped Option</option>
 				<option value="6">Another Grouped Option</option>
+				<option value="7">An extremely long option that was put into the 'Option Group' set of Grouped Options</option>
+			</optgroup>
+			<option value="2">Last Option</option>
+		</select><br /><br />
+		
+		The second box gets fully replaced and allows multi-line options.<br />
+		<select name="select_box_2" tabindex="2" id="select_box_2" data-styled-select-type="full" data-styled-select-multiline="true">
+			<option value=""></option>
+			<option value="3">An Option</option>
+			<option value="4">Another Option</option>
+			<optgroup label="&mdash; Option Group &mdash;">
+				<option value="5">A Grouped Option</option>
+				<option value="6">Another Grouped Option</option>
+				<option value="7">An extremely long option that was put into the 'Option Group' set of Grouped Options</option>
 			</optgroup>
 			<option value="2">Last Option</option>
 		</select>
+		<br /><br />
+		
+		The third box is just a regular select box, for reference.<br />
+		<select name="select_box_3" tabindex="3" id="select_box_3">
+			<option value=""></option>
+			<option value="3">An Option</option>
+			<option value="4">Another Option</option>
+			<optgroup label="&mdash; Option Group &mdash;">
+				<option value="5">A Grouped Option</option>
+				<option value="6">Another Grouped Option</option>
+				<option value="7">An extremely long option that was put into the 'Option Group' set of Grouped Options</option>
+			</optgroup>
+			<option value="2">Last Option</option>
+		</select>
+		<br /><br />
+		
+		The fourth box gets fully replaced but does not allow multi-line options.<br />
+		<select name="select_box_3" id="select_box_4" data-styled-select-type="full">
+			<option value=""></option>
+			<option value="3">An Option</option>
+			<option value="4">Another Option</option>
+			<optgroup label="&mdash; Option Group &mdash;">
+				<option value="5">A Grouped Option</option>
+				<option value="6">Another Grouped Option</option>
+				<option value="7">An extremely long option that was put into the 'Option Group' set of Grouped Options</option>
+			</optgroup>
+			<option value="2">Last Option</option>
+		</select>
+		
 		<script type='text/javascript'>
 			$(document).ready(function() {
-				$('select').each(function(index, select_box) {
-					var si_id = $(select_box).prop('id');
-					$(select_box).styledSelectBox({styled_select_id : si_id+"StyledSelect",
-												   image_base:'images',
-												   widget_height: 30,
-												   classes:['any_extra_classes', 'that_you_want']});
-					// now resize and update it
-					$(select_box).styledSelectBox('resize');
-					$(select_box).styledSelectBox('update');
-				});
+				$('select').not('#select_box_3')
+					.styledSelectBox({image_base:'images',
+									  widget_height: 30,
+									  classes:['any_extra_classes', 'that_you_want']})
+					.styledSelectBox('resize')
+					.styledSelectBox('update');
 			});
 		</script>
 	</body>

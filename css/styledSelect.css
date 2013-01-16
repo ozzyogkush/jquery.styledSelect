@@ -1,17 +1,23 @@
 /**
  * The primary CSS file for the StyledSelect widget.
  *
- * @version		1.1.6
+ * @version		2.0
  */
 
 /**
  * Provides basic focus styles - a dark grey shadow outline - on the new styled
- * select widget.
+ * select widget and replaces the original outline on a fully-replaced widget.
  */
-select.original_select_now_styled:focus + div.styled_select {
+select.original_select_now_styled:focus + div.styled_select,
+div.styled_select.styled-select-full-replacement:active,
+div.styled_select.styled-select-full-replacement:focus {
 	box-shadow: 0 0 4px 1px #888888;
 	-webkit-box-shadow: 0 0 4px 1px #888888;
 	-moz-box-shadow: 0 0 4px 1px #888888;
+}
+div.styled_select.styled-select-full-replacement:active,
+div.styled_select.styled-select-full-replacement:focus {
+	outline:none;
 }
 
 /**
@@ -35,21 +41,43 @@ select.original_select_now_styled {
 }
 
 /**
+ * Fully replaced select elements should not be displayed.
+ */
+select.styled-select-full-replacement {
+	display:none;
+}
+
+/**
  * The replacement widget element will have the same height and line-height
  * as the original select element, and be displayed inline-block.
  */
 div.styled_select {
+	border:1px inset #CCC;
 	position:relative;
 	cursor:pointer;
-	display:inline-block;
+	
+	/* Include the border in sizing */
+	-moz-box-sizing:border-box; /* FireFox */
+	-webkit-box-sizing:border-box; /* WebKit */
+	box-sizing:border-box; /* Everything Else */
+	
 	text-align:left;
 	height:16px;
 	line-height: 14px;
+	display:inline-block;
 	/* For IE7 */
 	zoom:1;
 	*display:inline;
 	/* For IE7 and IE8 */
 	*line-height:16px;
+}
+
+/**
+ * Fully replaced widgets should default their font to what a regular select
+ * element would use based on OS.
+ */
+div.styled_select.styled-select-full-replacement {
+	font:caption;
 }
 
 /**
@@ -90,4 +118,76 @@ div.styled_select span.styled_select_arrow {
 	position:absolute;
 	right:0px;
 	*top:1px; /* For IE7 */
+}
+
+/**
+ * The container that holds the list of options for a fully replaced widget should
+ * be hidden by default, with an absolute position (relative to the parent div.styled_select),
+ * min-width of 100% (and auto width for when options are longer than this), and offset
+ * -1px to the left to align with the border of the replacement widget.
+ */
+div.styled_select.styled-select-full-replacement div.styled_select_options_container {
+	display:none;
+	position:absolute;
+	color:#000;
+	left:-1px;
+	margin-top:-2px;
+	min-width:100%;
+	width:auto;
+}
+
+/**
+ * When multi-line options are allowed, give the container that holds the list of
+ * options for a fully replaced widget a max-width of 100%.
+ */
+div.styled_select.styled-select-full-replacement.styled-select-multiline div.styled_select_options_container {
+	max-width:100%;
+}
+/**
+ * When shown, the container that holds the list of options for a fully replaced
+ * widget should be displayed as a block element with a white background, a 1px
+ * inset grey border, auto height and vertical overflow. Z-index of 9999.
+ */
+div.styled_select.styled-select-full-replacement div.styled_select_options_container.show {
+	display:block;
+	background-color:#FFF;/*Menu;*/
+	border-top:1px solid ThreeDLightShadow;
+	border-left:1px solid ThreeDLightShadow;
+	border-right:1px solid ThreeDDarkShadow;
+	border-bottom:1px solid ThreeDDarkShadow;
+	z-index:9999;
+	height:auto;
+	overflow-y:auto;
+}
+div.styled_select.styled-select-full-replacement div.styled_select_options_container.show div.optgroup {
+	margin:0px;
+	padding:0px;
+	height:auto;
+}
+div.styled_select.styled-select-full-replacement div.styled_select_options_container.show div.optgroup_label {
+	font-style:italic;
+	font-weight:bold;
+}
+div.styled_select.styled-select-full-replacement div.styled_select_options_container.show div.optgroup_label,
+div.styled_select.styled-select-full-replacement div.styled_select_options_container.show div.option {
+	margin:0px;
+	padding:2px;
+	line-height:normal;
+	height:auto;
+}
+div.styled_select.styled-select-full-replacement div.styled_select_options_container.show div.option:empty {
+	height:12px;
+}
+div.styled_select.styled-select-full-replacement div.styled_select_options_container.show div.option {
+	white-space:nowrap;
+	display:block;
+}
+div.styled_select.styled-select-full-replacement div.styled_select_options_container.show div.option.highlight,
+div.styled_select.styled-select-full-replacement div.styled_select_options_container.show div.option:hover,
+div.styled_select.styled-select-full-replacement div.styled_select_options_container.show div.option:active {
+	background-color:Highlight;
+	color:#FFF;
+}
+div.styled_select.styled-select-full-replacement.styled-select-multiline div.styled_select_options_container.show div.option {
+	white-space:normal;
 }
