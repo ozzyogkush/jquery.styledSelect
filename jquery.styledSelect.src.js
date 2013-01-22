@@ -12,9 +12,9 @@
  * Cross-platform Compatibility
  * ----------------------------
  * 
- * * Firefox 3+
+ * * Firefox 4+
  * * Webkit (Google Chrome, Apple's Safari)
- * * Internet Explorer 7+
+ * * Internet Explorer 8+
  * * Opera
  * 
  * Requirements
@@ -59,6 +59,7 @@
  * * resize
  * * update
  *
+ * @changelog	2.0.1 -	fully replaced elements will now receive the 'title' attribute of the original select box if it is set
  * @changelog	2.0 -	refactored. removed 'styled\_select\_id' option. added full replacement and multi-line option options, and 'data-styled-select-...' attribute recognition<br />
  * @changelog	1.1.6 - bug fix: certain browsers were not properly setting width of the selected\_option\_div element<br />
  * @changelog	1.1.5 - added fix for navigating via key press events. added README<br />
@@ -68,7 +69,7 @@
  * @example		See example.html
  * @class		StyledSelectBox
  * @name		StyledSelectBox
- * @version		2.0
+ * @version		2.0.1
  * @author		Derek Rosenzweig <derek.rosenzweig@gmail.com, drosenzweig@riccagroup.com>
  */
 (function($) {
@@ -185,6 +186,7 @@
 		 * @access		public
 		 * @memberOf	StyledSelect
 		 * @since		2.0
+		 * @updated		2.0.1
 		 * @throws		StyledSelect exception
 		 *
 		 * @param		original_select_box				jQuery				jQuery extended <select> element
@@ -243,6 +245,10 @@
 				
 				if (multiline) {
 					this.replacement_container_div.addClass('styled-select-multiline');
+				}
+				
+				if (this.linked_select_box.attr('title') != null) {
+					this.replacement_container_div.attr('title', this.linked_select_box.attr('title'));
 				}
 				
 				if (this.linked_select_box.attr('tabindex') != null) {
